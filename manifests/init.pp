@@ -9,6 +9,7 @@ class libvirt(
   String        $package_ensure = 'present',
   Array[String] $path = ['/usr/local/sbin','/usr/local/bin','/usr/sbin','/usr/bin','/sbin','/bin'],
   Array[String] $users = [],
+  String        $service_name = 'libvirtd.service',
 ) {
   # Ensure class declares subordinate classes
   contain libvirt::install
