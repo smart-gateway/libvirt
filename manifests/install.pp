@@ -5,4 +5,16 @@
 # @example
 #   include libvirt::install
 class libvirt::install {
+  if $::libvirt::package_manage {
+    # Ensure packages are in the desired state
+    package { "ensure that the qemu-kvm package is ${::libvirt::package_ensure}":
+      name   => 'qemu-kvm',
+      ensure => $::libvirt::package_ensure,
+    }
+
+    package { "ensure that the libvirt-daemon-system package is ${::libvirt::package_ensure}":
+      name   => 'libvirt-daemon-system',
+      ensure => $::libvirt::package_ensure,
+    }
+  }
 }
