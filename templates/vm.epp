@@ -134,7 +134,7 @@
         <source bridge="<%= $network[0] %>"/>
         <%  if $network[2] != 0 { -%>
         <vlan>
-          <tag id="<%= $network[2] %>/>
+          <tag id="<%= $network[2] %>"/>
         </vlan>
         <% } -%>
         <virtualport type="openvswitch">
