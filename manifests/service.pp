@@ -13,7 +13,7 @@ class libvirt::service {
   }
 
   # Setup service state
-  service { 'ensure that the ovs service is in the desired state':
+  service { 'ensure that the libvirt service is in the desired state':
     name   => $::libvirt::service_name,
     ensure => $desired_state,
   }
