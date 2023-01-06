@@ -3,7 +3,11 @@
       Integer                               $cpus,
       Integer                               $memory_mb,
       String                                $disk_name,
-      Array[Tuple[String, String, Integer]] $networks,
+      Array[Struct[{
+        switch => String,
+        port   => String,
+        vlan   => Integer,
+      }]] $networks,
 | %>
 <?xml version="1.0" encoding="UTF-8"?>
 <domain type="kvm">
@@ -131,15 +135,15 @@
       </controller>
       <%  [$networks].each |$network| { -%>
       <interface type="bridge">
-        <source bridge="<%= $network[0] %>"/>
-        <%  if $network[2] != 0 { -%>
+        <source bridge="<%= $network.switch %>"/>
+        <% if $network.vlan != 0 { -%>
         <vlan>
-          <tag id="<%= $network[2] %>"/>
+          <tag id="<%= $network.vlan %>"/>
         </vlan>
         <% } -%>
         <virtualport type="openvswitch">
         </virtualport>
-        <target dev="<%= $network[1] %>"/>
+        <target dev="<%= $network.port %>"/>
         <model type="virtio"/>
       </interface>
       <% } -%>
