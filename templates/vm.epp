@@ -135,7 +135,7 @@
       </controller>
       <%  [$networks].each |$network| { -%>
       <interface type="bridge">
-        <source bridge="<%= $network[switch] %>"/>
+        <source bridge="<%= $network['switch'] %>"/>
         <% if $network.vlan != 0 { -%>
         <vlan>
           <tag id="<%= $network.vlan %>"/>
