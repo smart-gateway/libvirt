@@ -8,7 +8,11 @@ define libvirt::vm (
   Integer       $cpus = 1,
   Integer       $memory_mb = 1000,
   Integer       $disk_gb = 10,
-  Array[Tuple[String, String, Integer]] $networks = []
+  Array[Struct[{
+    switch => String,
+    port   => String,
+    vlan   => Integer,
+  }]] $networks = [],
 ) {
 
   # Create the domain definition
