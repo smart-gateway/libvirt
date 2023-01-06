@@ -136,14 +136,14 @@
       <%  $networks.each |$network| { -%>
       <interface type="bridge">
         <source bridge="<%= $network['switch'] %>"/>
-        <% if $network.vlan != 0 { -%>
+        <% if $network['vlan'] != 0 { -%>
         <vlan>
-          <tag id="<%= $network.vlan %>"/>
+          <tag id="<%= $network['vlan'] %>"/>
         </vlan>
         <% } -%>
         <virtualport type="openvswitch">
         </virtualport>
-        <target dev="<%= $network.port %>"/>
+        <target dev="<%= $network['port'] %>"/>
         <model type="virtio"/>
       </interface>
       <% } -%>
