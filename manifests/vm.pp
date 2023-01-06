@@ -17,9 +17,10 @@ define libvirt::vm (
 
   # Create the domain definition
   $uuid = libvirt::uuid()
+  $filename = "/tmp/${name}_domain.xml"
   file { "creating ${name} domain definition":
     ensure  => file,
-    path    => "/tmp/${name}_domain.xml",
+    path    => $filename,
     content => epp('libvirt/vm.epp', {
       'name'      => $name,
       'uuid'      => $uuid,
@@ -28,5 +29,6 @@ define libvirt::vm (
       'disk_name' => 'PUT_REAL_DISK_NAME_HERE_AFTER_IT_IS_CREATED.qcow2',
       'networks'  => $networks,
       }),
+    validate_cmd  => "test -f ${filename}",
   }
 }
