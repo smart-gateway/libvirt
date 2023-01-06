@@ -16,12 +16,13 @@ define libvirt::vm (
 ) {
 
   # Create the domain definition
+  $uuid = libvirt::uuid()
   file { "creating ${name} domain definition":
     ensure  => file,
     path    => "/tmp/${name}_domain.xml",
     content => epp('libvirt/vm.epp', {
       'name'      => $name,
-      'uuid'      => 'FIGURE_OUT_HOW_TO_MAKE_A_UUID_IN_PUPPET',
+      'uuid'      => $uuid,
       'cpus'      => $cpus,
       'memory_mb' => $memory_mb,
       'disk_name' => 'PUT_REAL_DISK_NAME_HERE_AFTER_IT_IS_CREATED.qcow2',
