@@ -60,7 +60,7 @@ define libvirt::vm (
   exec { "start ${name} virtual machine":
     command => "virsh start ${name}",
     path    => $::libvirt::path,
-    unless  => "virsh list --state-running | grep -q '\btest-01\b'",
+    unless  => "virsh list --state-running | grep -q '\b${name}\b'",
   }
 
   if $autostart {
