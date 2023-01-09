@@ -5,7 +5,6 @@
 # @example
 #   libvirt::vm { 'namevar': }
 define libvirt::vm (
-  String        $domain_directory = '/etc/libvirt/qemu',
   Boolean       $autostart = true,
   Integer       $cpus = 1,
   Integer       $memory_mb = 1000,
@@ -38,7 +37,7 @@ define libvirt::vm (
   $uuid = libvirt::uuid()
   file { "creating ${name} domain definition":
     ensure  => file,
-    path    => "${domain_directory}/${name}_domain.xml",
+    path    => "/tmp/${name}_domain.xml",
     content => epp('libvirt/vm.epp', {
       'name'      => $name,
       'uuid'      => $uuid,
@@ -52,7 +51,7 @@ define libvirt::vm (
 
   # Create the virtual machine
   exec { "create ${name} virtual machine":
-    command => "virsh define ${domain_directory}/${name}_domain.xml",
+    command => "virsh define /tmp/${name}_domain.xml",
     path    => $::libvirt::path,
     unless  => "virsh dominfo ${name}"
   }
