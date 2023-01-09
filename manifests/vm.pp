@@ -53,14 +53,14 @@ define libvirt::vm (
   exec { "create ${name} virtual machine":
     command => "virsh define /tmp/${name}_domain.xml",
     path    => $::libvirt::path,
-    unless  => "virsh dominfo ${name}"
+    unless  => "virsh dominfo ${name}",
   }
 
   # Start the virtual machine
   exec { "start ${name} virtual machine":
     command => "virsh start ${name}",
     path    => $::libvirt::path,
-    unless  => "virsh list --state-running | grep -q '\b${name}\b"
+    unless  => "virsh list --state-running | grep -q '\btest-01\b'",
   }
 
   if $autostart {
@@ -68,7 +68,7 @@ define libvirt::vm (
     exec { "configure ${name} for auto-start":
       command => "virsh autostart ${name}",
       path    => $::libvirt::path,
-      unless  => "virsh dominfo ${name} | grep 'Autostart:' | awk '{print $2}' | grep -q 'enable'"
+      unless  => "virsh dominfo ${name} | grep 'Autostart:' | awk '{print $2}' | grep -q 'enable'",
     }
   }
 
