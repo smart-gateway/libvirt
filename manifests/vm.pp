@@ -10,7 +10,7 @@ define libvirt::vm (
   Integer       $memory_mb = 1000,
   Integer       $disk_gb = 10,
   String        $disk_directory = '/var/lib/libvirt/images',
-  Bool          $disk_preallocate = true,
+  Boolean       $disk_preallocate = true,
   Array[Struct[{
     switch => String,
     port   => String,
