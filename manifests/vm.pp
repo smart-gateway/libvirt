@@ -59,7 +59,9 @@ define libvirt::vm (
 
   # Start the virtual machine
   exec { "start ${name} virtual machine":
-
+    command => "virsh start ${name}",
+    path    => $::libvirt::path,
+    unless  => "virsh list --state-running | grep -q '\b${name}\b"
   }
 
   if $autostart {
