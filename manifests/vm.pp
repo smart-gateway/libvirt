@@ -19,9 +19,11 @@ define libvirt::vm (
 ) {
 
   # Create the disk
-  $cmd = "qemu-img create -f qcow2 ${disk_directory}/${name}.qcow2 ${disk_gb}G"
+  $cmd_basic = "qemu-img create -f qcow2 ${disk_directory}/${name}.qcow2 ${disk_gb}G"
   if $disk_preallocate {
-    $cmd = "${cmd} -o preallocation=full"
+    $cmd = "${cmd_basic} -o preallocation=full"
+  } else {
+    $cmd = $cmd_basic
   }
   exec { "create the virtual disk ${disk_directory}/${name}.qcow2":
     command => $cmd,
