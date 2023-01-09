@@ -5,29 +5,52 @@
 # @example
 #   libvirt::vm { 'namevar': }
 define libvirt::vm (
+  String        $domain_directory = '/etc/libvirt/qemu',
   Integer       $cpus = 1,
   Integer       $memory_mb = 1000,
   Integer       $disk_gb = 10,
+  String        $disk_directory = '/var/lib/libvirt/images',
+  Bool          $disk_preallocate = true,
   Array[Struct[{
     switch => String,
     port   => String,
     vlan   => Integer,
-  }]] $networks = [],
+  }]]           $networks = [],
 ) {
 
+  # Create the disk
+  $cmd = "qemu-img create -f qcow2 ${disk_directory}/${name}.qcow2 ${disk_gb}G"
+  if $disk_preallocate {
+    $cmd = "${cmd} -o preallocation=full"
+  }
+  exec { "create the virtual disk ${disk_directory}/${name}.qcow2":
+    command => $cmd,
+    path    => $::libvirt::path,
+    unless  => "test -f ${disk_directory}/${name}.qcow2",
+  }
+
   # Create the domain definition
+  # TODO: have to set replace = no; otherwise it will replace every run since a new uuid will be generated. This makes
+  # TODO: it slightly more tricky when there are legit changes to the VM. Need to come up with a clean solution still.
   $uuid = libvirt::uuid()
   file { "creating ${name} domain definition":
     ensure  => file,
-    path    => "/tmp/${name}_domain.xml",
+    path    => "${domain_directory}/${name}_domain.xml",
     content => epp('libvirt/vm.epp', {
       'name'      => $name,
       'uuid'      => $uuid,
       'cpus'      => $cpus,
       'memory_mb' => $memory_mb,
-      'disk_name' => 'PUT_REAL_DISK_NAME_HERE_AFTER_IT_IS_CREATED.qcow2',
+      'disk_name' => "${disk_directory}/${name}.qcow2",
       'networks'  => $networks,
       }),
     replace => no,
+  }
+
+  # Create the virtual machine
+  exec { "create ${name} virtual machine":
+    command => "virsh define ${domain_directory}/${name}_domain.xml",
+    path    => $::libvirt::path,
+    unless  => "virsh dominfo ${name}"
   }
 }
