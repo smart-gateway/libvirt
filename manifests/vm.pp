@@ -6,6 +6,7 @@
 #   libvirt::vm { 'namevar': }
 define libvirt::vm (
   String        $domain_directory = '/etc/libvirt/qemu',
+  Boolean       $autostart = true,
   Integer       $cpus = 1,
   Integer       $memory_mb = 1000,
   Integer       $disk_gb = 10,
@@ -55,4 +56,19 @@ define libvirt::vm (
     path    => $::libvirt::path,
     unless  => "virsh dominfo ${name}"
   }
+
+  # Start the virtual machine
+  exec { "start ${name} virtual machine":
+
+  }
+
+  if $autostart {
+    # Set autostart
+    exec { "configure ${name} for auto-start":
+      command => "virsh autostart ${name}",
+      path    => $::libvirt::path,
+      unless  => "virsh dominfo ${name} | grep 'Autostart:' | awk '{print $2}' | grep -q 'enable'"
+    }
+  }
+
 }
