@@ -19,7 +19,7 @@
       </libosinfo:libosinfo>
    </metadata>
    <memory unit="MiB"><%= $memory_mb %></memory>
-   <currentMemory unit="KiB"><%= $memory_mb %></currentMemory>
+   <currentMemory unit="MiB"><%= $memory_mb %></currentMemory>
    <vcpu placement="static"><%= $cpus %></vcpu>
    <os>
       <type arch="x86_64" machine="pc-q35-4.2">hvm</type>
