@@ -141,9 +141,11 @@
           <tag id="<%= $network['vlan'] %>"/>
         </vlan>
         <%- } -%>
+        <%- if $network['port'] != undef { -%>
         <virtualport type="openvswitch">
         </virtualport>
         <target dev="<%= $network['port'] %>"/>
+        <%- } -%>
         <model type="virtio"/>
       </interface>
       <%- } -%>
