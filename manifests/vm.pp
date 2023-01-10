@@ -54,13 +54,15 @@ define libvirt::vm (
     command => "virsh define /tmp/${name}_domain.xml",
     path    => $::libvirt::path,
     unless  => "virsh dominfo ${name}",
+    notify  => Exec["start ${name} virtual machine"],
   }
 
   # Start the virtual machine
   exec { "start ${name} virtual machine":
-    command => "virsh start ${name}",
-    path    => $::libvirt::path,
-    unless  => "virsh list --state-running | grep -q '\b${name}\b'",
+    command     => "virsh start ${name}",
+    path        => $::libvirt::path,
+    unless      => "virsh list --state-running | grep -q '\b${name}\b'",
+    refreshonly => true,
   }
 
   if $autostart {
