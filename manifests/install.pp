@@ -16,5 +16,10 @@ class libvirt::install {
       name   => 'libvirt-daemon-system',
       ensure => $::libvirt::package_ensure,
     }
+
+    package { "ensure that the cloud-image-utils package is ${::libvirt::package_ensure}":
+      name   => 'cloud-image-utils',
+      ensure => $::libvirt::package_ensure,
+    }
   }
 }
