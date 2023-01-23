@@ -21,5 +21,10 @@ class libvirt::install {
       name   => 'cloud-image-utils',
       ensure => $::libvirt::package_ensure,
     }
+
+    package { "ensure that the libguestfs-tools package is ${::libvirt::package_package}":
+      name   => 'libguestfs-tools',
+      ensure => $::libvirt::package_package,
+    }
   }
 }
