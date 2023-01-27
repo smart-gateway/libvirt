@@ -15,6 +15,7 @@ define libvirt::vm (
     switch => String,
     port   => String,
     vlan   => Integer,
+    mac    => String,
   }]]           $networks = [],
 ) {
 
