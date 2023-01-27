@@ -7,6 +7,7 @@
         switch => String,
         port   => String,
         vlan   => Integer,
+        mac    => String,
       }]] $networks,
 | -%>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -135,6 +136,9 @@
       </controller>
       <%-  $networks.each |$network| { -%>
       <interface type="bridge">
+        <%- if $network['mac'] != '' { -%>
+        <mac address="<%= $network['mac'] %>/>
+        <%- } -%>
         <source bridge="<%= $network['switch'] %>"/>
         <%- if $network['vlan'] != 0 { -%>
         <vlan>
