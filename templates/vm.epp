@@ -137,7 +137,7 @@
       <%-  $networks.each |$network| { -%>
       <interface type="bridge">
         <%- if $network['mac'] != '' { -%>
-        <mac address="<%= $network['mac'] %>/>
+        <mac address="<%= $network['mac'] %>"/>
         <%- } -%>
         <source bridge="<%= $network['switch'] %>"/>
         <%- if $network['vlan'] != 0 { -%>
