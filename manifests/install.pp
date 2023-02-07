@@ -7,8 +7,8 @@
 class libvirt::install {
   if $::libvirt::package_manage {
     # Ensure packages are in the desired state
-    package { "ensure that the qemu-kvm package is ${::libvirt::package_ensure}":
-      name   => 'qemu-kvm',
+    package { "ensure that the qemu-system-x86 package is ${::libvirt::package_ensure}":
+      name   => 'qemu-system-x86',
       ensure => $::libvirt::package_ensure,
     }
 
