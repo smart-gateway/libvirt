@@ -24,7 +24,7 @@ class libvirt::install {
 
     package { "ensure that the libguestfs-tools package is ${::libvirt::package_ensure}":
       name   => 'libguestfs-tools',
-      ensure => $::libvirt::package_package,
+      ensure => $::libvirt::package_ensure,
     }
   }
 }
