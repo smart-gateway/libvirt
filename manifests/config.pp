@@ -11,7 +11,7 @@ class libvirt::config {
      exec { "add user ${user} to libvirt group":
        command => "adduser $user libvirt",
        path    => $::libvirt::path,
-       unless  => "getent group libvirt | grep -q '\b${user}\b'",
+       unless  => "getent group libvirt | grep -q '\\b${user}\\b'",
      }
    }
  }
